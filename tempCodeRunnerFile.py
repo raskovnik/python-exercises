@@ -1,1 +1,0 @@
-ChatBox = Text(root, bd=0, bg="white", height="8", width="50", font="Arial",)

@@ -1,45 +1,62 @@
 import socket
+import threading
+from time import sleep
 from tkinter import *
+
 s = socket.socket()
-s.connect(("127.0.0.1", 1676))
-username = "Anon:"
-def send():
-    msg = EntryBox.get("1.0",'end-1c').strip()
-    EntryBox.delete("0.0",END)
+s.connect(("0.0.0.0", 1778))
 
-    if msg != '':
-        ChatBox.config(state=NORMAL)
-        ChatBox.insert(END,"You: " + msg + '\n')
-        ChatBox.config(foreground="blue", font=("Verdana", 12 ))
-        sms = username + msg
-        s.send(sms.encode())
+username = input("Enter username: ")
+username += ":"
+
+class GUI:
+    def __init__(self, master):
+        self.master = master
+        master.geometry("300x450")
+        master.resizable(width = False, height = False)
+        master.title("Simple Chatapp")
+
+        self.ChatBox = Text(master, bd = 0, bg = "grey", height = "8", width = "50", font = "Arial")
+        self.ChatBox.config()
+        self.ChatBox.place(x=6,y=6, width=300, height=400)
+
+        self.scrollbar = Scrollbar(master, command = self.ChatBox.yview, cursor = "arrow")
+        self.ChatBox["yscrollcommand"] = self.scrollbar.set
+        self.scrollbar.place(x=290,y=6, height=386)
+
+        self.Send = Button(master, font = ("Verdana",12,"bold"), text = "send", width = "7", height = 3, bd = 0,
+                            bg = "green", activebackground = "#3c9d9b", fg = '#000000', command = self.send)
+        self.Send.place(x=6, y=407, height=30)
+
+        self.entext = Entry(master, bd = 0, bg = "grey", font = "Arial")
+        self.entext.place(x=128, y=407, height=30, width=175)
+
+    def send(self):
+        msg = self.entext.get("1.0",'end-1c').strip()
+        self.entext.delete("0.0",END)
+
+        if msg != '':
+            self.ChatBox.config(state=NORMAL)
+            self.ChatBox.insert(END,"You: " + msg + '\n')
+            self.ChatBox.config(foreground="blue", font=("Verdana", 12 ))
+            sms = username + msg
+            s.send(sms.encode())
+
+def main():
+    root = Tk()
+    gui = GUI(root)
+    root.mainloop()
+
+def receive_listen(sock):
+    while True:
+        sleep(5)
         text = s.recv(1024).decode()
-        ChatBox.insert(END, text + "\n")  
-        ChatBox.config(state=DISABLED)
-        ChatBox.yview(END)
+        if text:
+            GUI.ChatBox.insert(END, text + "\n")  
+            GUI.ChatBox.yview(END)
+
+threading.Thread(target=receive_listen, args=(s, )).start()
+
+if __name__ == "__main__":
+    main()
  
-
-root = Tk()
-root.title("Simple ChatApp")
-root.geometry("300x450")
-root.resizable(width=FALSE, height=FALSE)
-
-ChatBox = Text(root, bd=0, bg="grey", height="8", width="50", font="Arial",)
-
-ChatBox.config(state=DISABLED)
-
-scrollbar = Scrollbar(root, command=ChatBox.yview, cursor="arrow")
-ChatBox['yscrollcommand'] = scrollbar.set
-
-SendButton = Button(root, font=("Verdana",12,'bold'), text="Send", width="7", height=3,
-                    bd=0, bg="green", activebackground="#3c9d9b",fg='#000000',
-                    command= send )
-
-EntryBox = Text(root, bd=0, bg="grey",width="29", height="5", font="Arial")
-
-scrollbar.place(x=290,y=6, height=386)
-ChatBox.place(x=6,y=6, width=300, height=400)
-EntryBox.place(x=128, y=407, height=30, width=175)
-SendButton.place(x=6, y=407, height=30)
-
-root.mainloop()
