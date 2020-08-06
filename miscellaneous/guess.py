@@ -1,5 +1,5 @@
 from tkinter import *
-import keyboard
+
 # high = int(input("Enter maximum limit: "))
 # low, tries = 0, 0
 
@@ -26,7 +26,7 @@ class GUI:
         self.correct = Button(master, text = "Correct", activeforeground = "cyan", background = "grey")
         self.correct.place(x = 80, y = 360, width = 55)
 
-        self.low = Button(master, text = "Low", activeforeground = "green", background = "grey")
+        self.low = Button(master, text = "Low", activeforeground = "green", background = "grey", command = self.lowx() )
         self.low.place(x = 5, y = 360, width = 55)
 
         self.high = Button(master, text = "High", activeforeground = "red", background = "grey")
@@ -38,20 +38,22 @@ class GUI:
         self.enter = Entry(master, bd = 2, background = "grey", width = 7)
         self.enter.place(x = 175, y = 5)
         self.enter.focus()
-        
-        
-
-
+       
 
     def guessable(self):
-        #self.enter.bind("<Return>", keyboard.is_pressed("<Return>"))
-        high = int(self.enter.get())
-        low, tries = 0, 0
+        high_ = int(self.enter.get())
+        low_, tries = 0, 0
         while True:
-            guess = int((low + high) / 2)
-            correct = input(f"You guessed {guess}..(t/l/h): ").lower()
+            guess = int((low_ + high_) / 2)
+            #correct = input(f"You guessed {guess}..(t/l/h): ").lower()
+            self.guesser = Label(self.master,text = f"You guessed {guess}")
+            self.guesser.config()
+            y_axis = 25
+            self.guesser.place(x = 5, y = y_axis)
             tries += 1
-            if correct == "l":
+            y_axis += 25
+
+            if self.low == "l":
                 low = guess + 1
             elif correct == "h":
                 high = guess
@@ -59,11 +61,18 @@ class GUI:
                 print(f"You guessed {guess} and I got it in {tries} tries!!")
                 break
 
-GUI.enter.bind("<Return>", guessable)
+    def lowx(self):
+        low_ = guess + 1
+
+
+    def get_limit(self, *args):
+        self.guessable()
+        print(high)
 
 def main():
     root = Tk()
     game = GUI(root)
+    root.bind('<Return>', game.get_limit)
     root.mainloop()
 
 if __name__ == "__main__":
