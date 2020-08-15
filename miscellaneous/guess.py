@@ -41,6 +41,7 @@ class GUI:
        
 
     def guessable(self):
+        global guess
         high_ = int(self.enter.get())
         low_, tries = 0, 0
         while True:

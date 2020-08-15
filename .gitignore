@@ -1,4 +1,4 @@
 __pycache__/*
 */__pycache__/*
-__.vscode__/*
-*/__.vscode__/*
+.vscode/*
+*/.vscode/*
