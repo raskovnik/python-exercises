@@ -1,5 +1,5 @@
 from tkinter import *
-
+guess = 0
 # high = int(input("Enter maximum limit: "))
 # low, tries = 0, 0
 
@@ -44,8 +44,8 @@ class GUI:
         global guess
         high_ = int(self.enter.get())
         low_, tries = 0, 0
+        guess = int((low_ + high_) / 2)
         while True:
-            guess = int((low_ + high_) / 2)
             #correct = input(f"You guessed {guess}..(t/l/h): ").lower()
             self.guesser = Label(self.master,text = f"You guessed {guess}")
             self.guesser.config()
@@ -54,13 +54,13 @@ class GUI:
             tries += 1
             y_axis += 25
 
-            if self.low == "l":
-                low = guess + 1
-            elif correct == "h":
-                high = guess
-            else:
-                print(f"You guessed {guess} and I got it in {tries} tries!!")
-                break
+            # if self.low == "l":
+            #     low = guess + 1
+            # elif correct == "h":
+            #     high = guess
+            # else:
+            #     print(f"You guessed {guess} and I got it in {tries} tries!!")
+            #     break
 
     def lowx(self):
         low_ = guess + 1
