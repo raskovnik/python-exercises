@@ -57,7 +57,7 @@ def fillGrid(grid):
     for i in range(5):
         for j in range(5):
             if grid[i][j] == 0:
-                for k in range(1, 10):
+                for k in range(1, 26):
                     g_cp = deepcopy(grid)
                     g_cp[i][j] = k
                     if validGrid(g_cp):
