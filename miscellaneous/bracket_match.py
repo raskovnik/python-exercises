@@ -1,22 +1,20 @@
 from random import randint, shuffle
 
-stack, l, r = [], randint(1,10), randint(1,10)
-brackets = list("("*l + ")"*r)
+brackets, l, r = [], randint(1,10), randint(1,10)
+s = '(' * l + ")" * r
+for b in s:
+    brackets.append(b)
 shuffle(brackets)
-print(brackets)
-print(l,r)
+
+stack1, stack2 = [], []
+
 for i in brackets:
-    if i == "(":
-        stack.append(i)
+    if i == "(" :
+        stack1.append(i)
     else:
-        try:
-            stack.pop()
-        except IndexError:
-            print(stack)
-            print("All the brackets did not match")
-            break
+        stack2.append(i)
+
+if len(stack1) == len(stack2):
+    print("All the brackets matched")
 else:
-    if len(stack) > 0:
-        print("All the brackets did not match")
-    else:
-        print("Matched")
+    print("All the brackets did not match")
